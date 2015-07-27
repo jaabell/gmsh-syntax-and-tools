@@ -1,0 +1,55 @@
+%YAML1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+file_extensions:
+  - geo
+scope: source.geo
+contexts:
+  main:
+    # Strings begin and end with quotes, and use backslashes as an escape
+    # character
+    - match: '"'
+      scope: punctuation.definition.string.begin.geo
+      push: double_quoted_string
+
+    # Comments begin with a '//' and finish at the end of the line
+    - match: '//'
+      scope: punctuation.definition.comment.geo
+      push: line_comment
+
+    # Keywords are if, else for and while.
+    # Note that blackslashes don't need to be escaped within single quoted
+    # strings in YAML. When using single quoted strings, only single quotes
+    # need to be escaped: this is done by using two single quotes next to each
+    # other.
+    - match: '\b(If|For|EndFor|Include|Exit|In)\b'
+      scope: keyword.control.geo
+
+    - match: '\b(Abort|Acos|AdaptMesh|Asin|Atan|Atan2|Attractor|AttractorAnisoCurve|Background|Ball|Boundary|BoundaryLayer|BoundingBox|Box|BSpline|Call|CatmullRom|Ceil|Centerline|Characteristic|Circle|Coherence|Cohomology|CombinedBoundary|Compound|Cos|Cosh|Cpu|CreateDir|Curvature|Cylinder|DefineConstant|DefineNumber|Delete|Dilate|Draw|Ellipse|Error|Exp|EXTRUDE|Extrude|Fabs|Field|Floor|Fmod|Frustum|Gradient|Hide|Homology|Hypot|IntersectAniso|Laplacian|Line|Log|Log10|LonLat|Loop|Macro|MathEval|MathEvalAniso|Max|MaxEigenHessian|Mean|Memory|Merge|Mesh|Min|MinAniso|Modulo|MPI_Rank|MPI_Size|NewModel|Periodic|Physical|Plane|Plugin|Point|PostView|Print|Printf|Rand|Recombine|RefineMesh|RelocateMesh|Restrict|Return|Reverse|Rotate|Round|Ruled|Save|SetChanged|SetName|SetNumber|SetOrder|SetPartition|SetString|Show|Sin|Sinh|Sleep|Smoother|Spline|Sqrt|Structured|Surface|Symmetry|SyncModel|SystemCall|Tan|Tanh|Threshold|TotalMemory|Transfinite|TransfQuadTri|Translate|Volume|CurrentDirectory|StrPrefix|StrRelative|StrCat|Str|StrChoice|Sprintf|GetEnv|GetString|StrReplace|DefineString)\b'
+      scope: keyword.other.geo
+
+    # Numbers
+    - match: '\b(-)?[0-9.]+\b'
+      scope: constant.numeric.geo
+
+    # Constants
+    - match: '\b(Pi,newl|newll|newp|newreg|news|newsl|newv)\b'
+      scope: constant.numeric.geo
+    
+    #No while statement in GMSH
+    - match: '\b(While)\b'
+      scope: invalid.illegal.geo
+
+  double_quoted_string:
+    - meta_scope: string.quoted.double.geo
+    - match: '\\.'
+      scope: constant.character.escape.geo
+    - match: '"'
+      scope: punctuation.definition.string.end.geo
+      pop: true
+
+  line_comment:
+    - meta_scope: comment.line.geo
+    - match: $
+      pop: true
+
